@@ -5,13 +5,21 @@ import { useTranslation } from 'react-i18next';
 
 import LanguageBar from '../LanguageBar/LanguageBar';
 import { Context } from '../../../State/Store';
+import Toast from '../../../State/Consts/Toast';
+import AuthHandler from '../../Services/AuthHandler';
+import Menu from '../Auth/Menu';
 
 export default function MainNavigation(props) {
   const { t } = useTranslation();
   const [, dispatch] = useContext(Context);
 
+  const logOut = () => {
+    AuthHandler.logout();
+    props.setIsAuthenticated(false);
+  };
+
   const clearToasts = (e) => {
-    dispatch({type: 'UNSET_TOASTS'});
+    dispatch({type: Toast.UNSET_ALL});
   }
 
   return (
@@ -20,13 +28,16 @@ export default function MainNavigation(props) {
         <div className='float-left'>
           <ul className='nav nav-tabs justify-content-center'>
             <li className='nav-item'>
-              <NavLink exact to='/' onClick={clearToasts} className='nav-link' activeClassName='active'>{t('home')}</NavLink>
+              <NavLink exact to='/'
+                onClick={clearToasts}
+                className='nav-link'
+                activeClassName='active'>{t('home')}</NavLink>
             </li>
             <li className='nav-item'>
-              <NavLink to='/registration' onClick={clearToasts} className='nav-link' activeClassName='active'>{t('registration')}</NavLink>
-            </li>
-            <li className='nav-item'>
-              <NavLink to='/verification' onClick={clearToasts} className='nav-link' activeClassName='active'>{t('verification')}</NavLink>
+              <NavLink to='/verification'
+                onClick={clearToasts}
+                className='nav-link'
+                activeClassName='active'>{t('verification')}</NavLink>
             </li>
           </ul>
         </div>
@@ -42,6 +53,7 @@ export default function MainNavigation(props) {
                 'name': 'EN'
               }
             }}/>
+          <Menu logOut={logOut} clearToasts={clearToasts} t={t} isAuthenticated={props.isAuthenticated} />
         </div>
       </div>
     </nav>

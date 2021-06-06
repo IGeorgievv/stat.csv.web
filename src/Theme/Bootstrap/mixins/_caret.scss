@@ -28,6 +28,9 @@
   @if $enable-caret {
     &::after {
       display: inline-block;
+      position: absolute;
+      top: calc(50% - (#{$caret-width} / 2));
+      right: 8px;
       width: 0;
       height: 0;
       margin-left: $caret-width * .85;
@@ -40,6 +43,12 @@
       } @else if $direction == right {
         @include caret-right;
       }
+    }
+
+    &.show::after {
+      -ms-transform: rotate(-180deg); /* IE 9 */
+      -webkit-transform: rotate(-180deg); /* Chrome, Safari, Opera */
+      transform: rotate(-180deg);
     }
 
     @if $direction == left {

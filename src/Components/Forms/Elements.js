@@ -18,6 +18,86 @@ export function Input(props) {
   );
 }
 
+export function Select(props) {
+  let options = props.options;
+  if (!props.options) {
+    options = [];
+  }
+
+  const initOption = options.find(function(op) {
+    return op[props.valueKey] === props.value;
+  });
+
+  const [activeOption, setActiveOption] = useState(initOption);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const selectOption = (e) => {
+    e.preventDefault();
+
+    const option = props.options.find(function (op) {
+      return op[props.valueKey] === e.currentTarget.dataset.value;
+    });
+    if (!option) {
+      return; // Error
+    }
+
+    setIsOpen(false);
+    if (option[props.valueKey] === activeOption[props.valueKey]) {
+      return;
+    }
+
+    e.target.name = props.name;
+    e.target.value = option[props.valueKey];
+    props.handleChange(e);
+    setActiveOption(option);
+  }
+
+  const toggleMenu = (e) => {
+    e.preventDefault();
+
+    setIsOpen(!isOpen);
+  }
+
+  useEffect(() => {
+    const initOption = options.find(function(op) {
+      return op[props.valueKey] === props.value;
+    });
+
+    setActiveOption(initOption);
+  }, [options, props.value, props.valueKey]);
+
+  if (!activeOption) {
+    return null;
+  }
+
+  return (
+    <div className='form-group'>
+      <label>
+        {props.title}
+      </label>
+      <div className='position-relative' role='group'>
+        <div onClick={toggleMenu} className={'dropdown-toggle position-relative form-control'+ (isOpen ? ' show' : '')}>
+          {activeOption[props.label]}
+        </div>
+        <ul className={'dropdown-menu scrollable-menu'+ (isOpen ? ' show' : '')}>
+          {props.options.map((option, i) => {
+            return (
+              <li
+                key={option[props.valueKey]}
+                data-value={option[props.valueKey]}
+                onClick={selectOption}
+                className={'dropdown-item rounded' + (props.value === option[props.valueKey] ? ' disable' : '')}>
+                {option[props.label]}
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
 export function InternalSelect(props) {
   const initOption = props.options.find(function(op) {
     return op.iso_code === props.value;
@@ -35,7 +115,7 @@ export function InternalSelect(props) {
     if (!option) {
       return; // Error
     }
-    
+
     setIsOpen(false);
     if (option.iso_code === activeOption.iso_code) {
       return;
@@ -72,7 +152,7 @@ export function InternalSelect(props) {
       </div>
       <input type='hidden' name={props.name} value={activeOption.iso_code} onChange={props.handleChange} />
       <ul className={'dropdown-menu select-image scrollable-menu'+ (isOpen ? ' show' : '')}>
-        {props.options.map((option, i) => {     
+        {props.options.map((option, i) => {
           return (
             <li
               key={option.iso_code}
@@ -81,7 +161,7 @@ export function InternalSelect(props) {
               className={'dropdown-item p-0' + (props.value === option.iso_code ? ' disable' : '')}>
               <img src={option.flag_url} alt={option.iso_code} className='img-fluid' />
             </li>
-          ) 
+          )
         })}
       </ul>
     </div>
@@ -92,7 +172,7 @@ export function Errors(props) {
   const errors = [];
   for (const errorKey in props.errors) {
     const errorMessage = props.errors[errorKey];
-    errors.push(<small>{errorMessage}<br/></small>);
+    errors.push(<small key={errorKey}>{errorMessage}<br/></small>);
   }
   return (
     errors.length >= 1 && <div className='alert alert-info p-1' role='alert'>
@@ -109,7 +189,7 @@ export function Phone(props) {
         <tbody>
           <tr>
             <td className='select-image'>
-              <InternalSelect 
+              <InternalSelect
                 name={props.select.name}
                 value={props.select.value}
                 options={props.select.options}

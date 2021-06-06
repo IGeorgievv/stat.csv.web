@@ -327,9 +327,9 @@ $input-btn-padding-y:         .375rem !default;
 $input-btn-padding-x:         .75rem !default;
 $input-btn-line-height:       $line-height-base !default;
 
-$input-btn-focus-width:       .2rem !default;
-$input-btn-focus-color:       rgba($component-active-bg, .25) !default;
-$input-btn-focus-box-shadow:  0 0 0 $input-btn-focus-width $input-btn-focus-color !default;
+$input-btn-focus-width:       .1rem !default;
+$input-btn-focus-color:       rgba($component-active-bg, .70) !default;
+$input-btn-focus-box-shadow:  inset 0 0 0 $input-btn-focus-width $input-btn-focus-color !default;
 
 $input-btn-padding-y-sm:      .25rem !default;
 $input-btn-padding-x-sm:      .5rem !default;
@@ -532,8 +532,9 @@ $form-feedback-invalid-color:       theme-color("danger") !default;
 
 $dropdown-min-width:                10rem !default;
 $dropdown-padding-y:                .5rem !default;
+$dropdown-padding:                  .3rem !default;
 $dropdown-spacer:                   .125rem !default;
-$dropdown-bg:                       $white !default;
+$dropdown-bg:                       $gray-200 !default;
 $dropdown-border-color:             rgba($black, .15) !default;
 $dropdown-border-radius:            $border-radius !default;
 $dropdown-border-width:             $border-width !default;

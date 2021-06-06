@@ -1,22 +1,30 @@
+import Toast from "./Consts/Toast";
+
 const Reducer = (state, action) => {
   switch (action.type) {
-      case 'SET_TOASTS':
+      case Toast.SET_ALL:
         return {
           ...state,
           toasts: action.payload
         };
-      case 'ADD_TOAST':
+      case Toast.ADD:
         const uniqueToasts = state.toasts.filter(toast => toast.id !== action.payload.id);
+        if (action.payload.message) {
+          return {
+            ...state,
+            toasts: uniqueToasts.concat(action.payload)
+          };
+        }
         return {
           ...state,
-          toasts: uniqueToasts.concat(action.payload)
+          toasts: uniqueToasts
         };
-      case 'REMOVE_TOAST':
+      case Toast.REMOVE:
         return {
           ...state,
           toasts: state.toasts.filter(toast => toast.id !== action.payload)
         };
-      case 'UNSET_TOASTS':
+      case Toast.UNSET_ALL:
         return {
           ...state,
           toasts: []

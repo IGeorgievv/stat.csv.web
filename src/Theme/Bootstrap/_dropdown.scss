@@ -14,11 +14,12 @@
   position: absolute;
   top: 100%;
   left: 0;
+  right: 0;
   z-index: $zindex-dropdown;
   display: none; // none by default, but block on "open" of the menu
   float: left;
   min-width: $dropdown-min-width;
-  padding: $dropdown-padding-y 0;
+  padding: $dropdown-padding;
   margin: $dropdown-spacer 0 0; // override default ul
   font-size: $font-size-base; // Redeclare because nesting can cause inheritance issues
   color: $body-color;

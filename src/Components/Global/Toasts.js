@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Toast from '../../State/Consts/Toast';
 import { Context } from '../../State/Store';
 
 export default function Toasts() {
@@ -6,8 +7,8 @@ export default function Toasts() {
 
   const closeToast = (e) => {
     e.preventDefault();
-    
-    dispatch({type: 'REMOVE_TOAST', payload: e.target.value});
+
+    dispatch({type: Toast.REMOVE, payload: e.target.value});
   }
 
   let typeToast;
@@ -19,7 +20,7 @@ export default function Toasts() {
     } else {
       typeToast = 'danger';
     }
-    
+
     return (
       <div key={i} className={'alert alert-'+ typeToast +' alert-dismissible fade show'}>
         <strong>{toast.message}</strong>
@@ -35,5 +36,5 @@ export default function Toasts() {
     );
   });
 
-  return (state.toasts && <div>{toasts}</div>);
+  return (state.toasts && <div className='container px-3 fixed-bottom'>{toasts}</div>);
 }

@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
- 
+
 import { TRANSLATIONS_EN } from './en';
 import { TRANSLATIONS_BG } from './bg';
 
@@ -24,6 +24,6 @@ i18n
   });
 
 i18n.languages = ['en', 'bg'];
-i18n.changeLanguage('bg');
+i18n.changeLanguage('en');
 
 export default i18n;

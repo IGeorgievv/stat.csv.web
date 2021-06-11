@@ -25,29 +25,17 @@ export default function Request(props) {
           return;
         }
 
-        if (response.data.code === 200) {
-          if (props.returnTo) {
-            setRedirect(props.returnTo);
-            if (props.toastId) {
-              dispatch({type: Toast.UNSET_ALL});
-            }
-          } else {
-            props.setLoading(false);
-            if (props.baseFormData) {
-              props.setFormData(props.baseFormData);
-            } else {
-              props.setFormData(response.data);
-            }
-          }
-        } else if (response.data.code === 401) {
-          setRedirect('/login');
+        if (props.returnTo) {
+          setRedirect(props.returnTo);
           if (props.toastId) {
             dispatch({type: Toast.UNSET_ALL});
           }
         } else {
           props.setLoading(false);
-          if (response.data.data) {
-            props.setReceivedValidationErrors(response.data.data);
+          if (props.baseFormData) {
+            props.setFormData(props.baseFormData);
+          } else {
+            props.setFormData(response.data);
           }
         }
 
@@ -67,6 +55,23 @@ export default function Request(props) {
       },
       (error) => {
         props.setLoading(false);
+        if (error.response.data) {
+          props.setVErrors(error.response.data);
+        }
+
+        if (error.response.data.message && error.response.data.message !== '') {
+          if (props.toastId) {
+            dispatch({type: Toast.ADD, payload: {
+              id: props.toastId,
+              code: error.response.status,
+              message: error.response.data.message
+            }});
+          }
+        } else {
+          if (props.toastId) {
+            dispatch({type: Toast.REMOVE, payload: props.toastId});
+          }
+        }
       }
     );
 
@@ -90,7 +95,7 @@ Request.propTypes = {
   baseFormData: PropTypes.object,
   setFormData: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,
-  setReceivedValidationErrors: PropTypes.func.isRequired,
+  setVErrors: PropTypes.func.isRequired,
   toastId: PropTypes.string,
   setLoading: PropTypes.func,
 }
@@ -100,7 +105,7 @@ Request.defaultProps = {
   url: '',
   formData: {},
   setFormData: function(setState) {return setState;},
-  setReceivedValidationErrors: function(setState) {return setState;},
+  setVErrors: function(setState) {return setState;},
   dispatch: function(setState) {return setState;},
   setLoading: function(setState) {return setState;},
 }
